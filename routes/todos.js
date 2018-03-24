@@ -2,15 +2,18 @@ var express = require("express");
 var router = express.Router();
 var db = require("../models");
 
+// Get all todos
 router.get('/', function(req, res){
-    db.Todo.find().then(function(todos){
+    db.Todo.find()
+    .then(function(todos){
         res.json(todos);
     })
     .catch(function(err){
         res.send(err);
-    })
+    });
 });
 
+// Create a new todo route
 router.post('/', function(req, res){
     db.Todo.create(req.body)
     .then(function(newTodo){
@@ -18,7 +21,18 @@ router.post('/', function(req, res){
     })
     .catch(function(err){
         res.send(err);
+    });
+});
+
+// Show one todo route
+router.get('/:todoId', function(req, res){
+    db.Todo.findById(req.params.todoId)
+    .then(function(foundTodo){
+        res.json(foundTodo);
     })
+    .catch(function(err){
+        res.send(err);
+    });
 });
 
 module.exports = router;
